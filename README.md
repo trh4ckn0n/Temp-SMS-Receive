@@ -42,7 +42,7 @@ A Python script to fetch temporary SMS numbers and display received messages.
 1. Run the script:
 
     ```bash
-    python tempsms.py
+    python temp.py
     ```
 
 2. Follow the on-screen instructions to select a country and fetch temporary SMS numbers.
@@ -112,6 +112,14 @@ Sandaru Ashen
 
 - [GitHub](https://github.com/Sl-Sanda-Ru)
 - [Telegram](https://t.me/Sl_Sanda_Ru)
+
+## 👤 Modder
+
+TRHACKNON
+
+- [GitHub](https://github.com/trh4ckn0n)
+- [Telegram](https://t.me/trhacknon)
+
 
 ## 📜 License
 
