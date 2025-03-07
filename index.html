@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temp-SMS-Receive</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #f1f1f1;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #00ff00;
+        }
+        a {
+            color: #00bcd4;
+            text-decoration: none;
+        }
+        section {
+            padding: 20px;
+        }
+        pre {
+            background-color: #222;
+            color: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .features ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .features li {
+            background-color: #333;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .tools, .api-source, .decompiled {
+            background-color: #333;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .license {
+            background-color: #444;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        footer {
+            background-color: #333;
+            padding: 15px;
+            text-align: center;
+            color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📱 Temp-SMS-Receive</h1>
+        <p>A Python script to fetch temporary SMS numbers and display received messages.</p>
+        <p>
+            <a href="https://wakatime.com/badge/user/018e35c7-dffb-4eaa-b21c-9bb81183371b/project/946f7b58-72c0-4ed3-a83f-1dc1d76f842a">wakatime</a> |
+            <a href="https://www.codefactor.io/repository/github/sl-sanda-ru/temp-sms-receive">CodeFactor</a> |
+            <a href="https://github.com/sl-sanda-ru/temp-sms-receive">GitHub</a> |
+            <a href="https://opensource.org/licenses/MIT">License</a>
+        </p>
+    </header>
+
+    <section class="features">
+        <h2>✨ Features</h2>
+        <ul>
+            <li>🌍 Fetches temporary SMS numbers from various countries.</li>
+            <li>📩 Displays SMS messages received by the fetched numbers.</li>
+            <li>📋 Copies selected number to the clipboard.</li>
+            <li>🔄 Handles dependencies automatically.</li>
+            <li>🎨 Includes a colorful and interactive CLI.</li>
+            <li>🔄 Automatic Update (via GIT)</li>
+        </ul>
+    </section>
+
+    <section class="prerequisites">
+        <h2>🛠️ Prerequisites</h2>
+        <ul>
+            <li>🐍 Python 3.x</li>
+            <li>📦 PIP (Python package installer)</li>
+        </ul>
+    </section>
+
+    <section class="installation">
+        <h2>📥 Installation</h2>
+        <ol>
+            <li>Clone the repository:
+                <pre>git clone https://github.com/trh4ckn0n/Temp-SMS-Receive.git && cd Temp-SMS-Receive</pre>
+            </li>
+            <li>Install dependencies:
+                <pre>pip install -r requirements.txt</pre>
+            </li>
+        </ol>
+    </section>
+
+    <section class="usage">
+        <h2>🚀 Usage</h2>
+        <ol>
+            <li>Run the script:
+                <pre>python tempsms.py</pre>
+            </li>
+            <li>Follow the on-screen instructions to select a country and fetch temporary SMS numbers.</li>
+            <li>Choose a number to see the received SMS messages.</li>
+        </ol>
+    </section>
+
+    <section class="api-source">
+        <h2>🔗 API Source</h2>
+        <p>The API is extracted from the <a href="https://play.google.com/store/apps/details?id=com.tempnumber.Temp_Number.Temp_Number">Temp Number APP</a>.</p>
+    </section>
+
+    <section class="tools">
+        <h2>🛠️ Tools Used</h2>
+        <ul>
+            <li><strong>jadx-gui</strong>: Assisted in decompiling the Java source code to find the decrypt key.</li>
+            <li><strong>Magisk</strong>: Used for SSL bypass.</li>
+            <li><strong>HttpCanary</strong>: Used for intercepting network traffic and analyzing HTTP requests.</li>
+        </ul>
+    </section>
+
+    <section class="decompiled">
+        <h2>🔍 Decompiled Java Source Code</h2>
+        <pre>
+public void displayKeyData(EncryptedKeyResponse encryptedKeyResponse, String str) {
+    String str2;
+    if (encryptedKeyResponse == null || (str2 = encryptedKeyResponse.api_key) == null || str2.isEmpty()) {
+        return;
+    }
+    char[] charArray = new Decryption().decryption(encryptedKeyResponse.api_key, this.sharedpreferences.getString("keyId", "")).toCharArray();
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; 32; i++) {
+        sb.append(charArray[i]);
+    }
+    this.freeNumbersPresenter.getFreeNumber(new NumbersRequest(this.CountryName, this.page, 10), "Bearer " + ((Object) sb));
+}
+public String decryption(String str, String str2) {
+    byte[] decode;
+    try {
+        if (Build.VERSION.SDK_INT >= 26) {
+            decode = Base64.getDecoder().decode(str);
+        } else {
+            decode = android.util.Base64.decode(str, 0);
+        }
+        byte[] bArr = new byte[16];
+        int length = decode.length - 16;
+        byte[] bArr2 = new byte[length];
+        System.arraycopy(decode, 0, bArr, 0, 16);
+        System.arraycopy(decode, 16, bArr2, 0, length);
+        SecretKeySpec secretKeySpec = new SecretKeySpec(str2.getBytes(), "AES");
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(bArr);
+        Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
+        cipher.init(2, secretKeySpec, ivParameterSpec);
+        return new String(cipher.doFinal(bArr2));
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+        </pre>
+    </section>
+
+    <section class="stargazers">
+        <h2>🌟 Stargazers</h2>
+        <p>
+            <a href="https://github.com/Sl-Sanda-Ru/Temp-SMS-Receive/stargazers">Stargazers repo roster</a> |
+            <a href="https://github.com/Sl-Sanda-Ru/Temp-SMS-Receive/network/members">Forkers repo roster</a>
+        </p>
+    </section>
+
+    <section class="author">
+        <h2>👤 Author</h2>
+        <p>Sandaru Ashen</p>
+        <ul>
+            <li><a href="https://github.com/Sl-Sanda-Ru">GitHub</a></li>
+            <li><a href="https://t.me/Sl_Sanda_Ru">Telegram</a></li>
+        </ul>
+    </section>
+
+    <section class="license">
+        <p>📜 License: This project is licensed under the GPT-3.0 License</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Temp-SMS-Receive. All rights reserved.</p>
+    </footer>
+</body>
+</html>
